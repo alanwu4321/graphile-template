@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 /* eslint-disable no-console */
 import chalk from "chalk";
-import { createServer } from "https";
-// import { createServer } from "http";
+// import { createServer } from "https";
+import { createServer } from "http";
 
 const fs = require("fs");
 
@@ -14,8 +14,8 @@ const packageJson = require("../../../package.json");
 async function main() {
   // Create our HTTP server
   const httpServer = createServer({
-    key: fs.readFileSync("/Users/alwu/localhost+2-key.pem"),
-    cert: fs.readFileSync("/Users/alwu/localhost+2.pem"),
+    // key: fs.readFileSync("/Users/alwu/localhost+2-key.pem"),
+    // cert: fs.readFileSync("/Users/alwu/localhost+2.pem"),
   });
 
   // Make our application (loading all the middleware, etc)

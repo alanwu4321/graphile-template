@@ -12,14 +12,14 @@ export APP_NAME="alan-v2"
 # Must be under 48 characters long, shorter is better.
 # Should only contain characters valid in a PostgreSQL identifier (i.e. no hyphens!)
 export DATABASE_NAME="$(echo "$APP_NAME" | tr '-' '_')"
-#e.g. export DATABASE_NAME="my_database_name_here"
+# e.g. export DATABASE_NAME="my_database_name_here"
 
 # Database location (including :port, if it's not the standard :5432)
-export DATABASE_HOST="ec2-54-86-170-8.compute-1.amazonaws.com"
+export DATABASE_HOST="35.188.115.102"
 
 # Superuser credentials, used for creating the database
-export DATABASE_SUPERUSER="bdqopqwcnhykfj"
-export DATABASE_SUPERUSER_PASSWORD="631d4c3ebafa1891154f1871f75dcf71c91cb525d4042e718f4f2267a1dfcaee"
+export DATABASE_SUPERUSER="postgres"
+export DATABASE_SUPERUSER_PASSWORD="Alanwu131441"
 
 ########################################
 #    PLEASE PROOF-READ THE BELOW,      #
@@ -39,7 +39,7 @@ export DATABASE_OWNER_PASSWORD="$(openssl rand -base64 30 | tr '+/' '-_')"
 export DATABASE_AUTHENTICATOR_PASSWORD="$(openssl rand -base64 30 | tr '+/' '-_')"
 
 # We're using 'template1' because we know it should exist. We should not actually change this database.
-export SUPERUSER_TEMPLATE1_URL="postgres://${DATABASE_SUPERUSER}:${DATABASE_SUPERUSER_PASSWORD}@${DATABASE_HOST}/d1fhlum9pah9qt"
+export SUPERUSER_TEMPLATE1_URL="postgres://${DATABASE_SUPERUSER}:${DATABASE_SUPERUSER_PASSWORD}@${DATABASE_HOST}/template1"
 export SUPERUSER_DATABASE_URL="postgres://${DATABASE_SUPERUSER}:${DATABASE_SUPERUSER_PASSWORD}@${DATABASE_HOST}/${DATABASE_NAME}"
 
 echo
@@ -50,31 +50,31 @@ psql -X1v ON_ERROR_STOP=1 "${SUPERUSER_TEMPLATE1_URL}" -c 'SELECT true AS succes
 echo
 echo
 echo "Creating Heroku app"
-heroku apps:create "$APP_NAME"
+# heroku apps:create "$APP_NAME"
 
 echo
 echo
 echo "Provisioning the free redis addon"
-heroku addons:create heroku-redis:hobby-dev -a "$APP_NAME"
+# heroku addons:create heroku-redis:hobby-dev -a "$APP_NAME"
 
-echo
-echo
-echo "Creating the database and the roles"
-psql -Xv ON_ERROR_STOP=1 "${SUPERUSER_TEMPLATE1_URL}" <<HERE
-CREATE ROLE ${DATABASE_OWNER} WITH LOGIN PASSWORD '${DATABASE_OWNER_PASSWORD}';
-GRANT ${DATABASE_OWNER} TO ${DATABASE_SUPERUSER};
-CREATE ROLE ${DATABASE_AUTHENTICATOR} WITH LOGIN PASSWORD '${DATABASE_AUTHENTICATOR_PASSWORD}' NOINHERIT;
-CREATE ROLE ${DATABASE_VISITOR};
-GRANT ${DATABASE_VISITOR} TO ${DATABASE_AUTHENTICATOR};
+# echo
+# echo
+# echo "Creating the database and the roles"
+# psql -Xv ON_ERROR_STOP=1 "${SUPERUSER_TEMPLATE1_URL}" <<HERE
+# CREATE ROLE ${DATABASE_OWNER} WITH LOGIN PASSWORD '${DATABASE_OWNER_PASSWORD}';
+# GRANT ${DATABASE_OWNER} TO ${DATABASE_SUPERUSER};
+# CREATE ROLE ${DATABASE_AUTHENTICATOR} WITH LOGIN PASSWORD '${DATABASE_AUTHENTICATOR_PASSWORD}' NOINHERIT;
+# CREATE ROLE ${DATABASE_VISITOR};
+# GRANT ${DATABASE_VISITOR} TO ${DATABASE_AUTHENTICATOR};
 
--- Create database
-CREATE DATABASE ${DATABASE_NAME} OWNER ${DATABASE_OWNER};
+# -- Create database
+# CREATE DATABASE ${DATABASE_NAME} OWNER ${DATABASE_OWNER};
 
--- Database permissions
-REVOKE ALL ON DATABASE ${DATABASE_NAME} FROM PUBLIC;
-GRANT ALL ON DATABASE ${DATABASE_NAME} TO ${DATABASE_OWNER};
-GRANT CONNECT ON DATABASE ${DATABASE_NAME} TO ${DATABASE_AUTHENTICATOR};
-HERE
+# -- Database permissions
+# REVOKE ALL ON DATABASE ${DATABASE_NAME} FROM PUBLIC;
+# GRANT ALL ON DATABASE ${DATABASE_NAME} TO ${DATABASE_OWNER};
+# GRANT CONNECT ON DATABASE ${DATABASE_NAME} TO ${DATABASE_AUTHENTICATOR};
+# HERE
 
 echo
 echo
