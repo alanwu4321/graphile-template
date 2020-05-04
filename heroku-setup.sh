@@ -39,8 +39,8 @@ export DATABASE_OWNER_PASSWORD="$(openssl rand -base64 30 | tr '+/' '-_')"
 export DATABASE_AUTHENTICATOR_PASSWORD="$(openssl rand -base64 30 | tr '+/' '-_')"
 
 # We're using 'template1' because we know it should exist. We should not actually change this database.
-export SUPERUSER_TEMPLATE1_URL="postgres://${DATABASE_SUPERUSER}:${DATABASE_SUPERUSER_PASSWORD}@${DATABASE_HOST}/template1"
-export SUPERUSER_DATABASE_URL="postgres://${DATABASE_SUPERUSER}:${DATABASE_SUPERUSER_PASSWORD}@${DATABASE_HOST}/${DATABASE_NAME}"
+export SUPERUSER_TEMPLATE1_URL="postgres://${DATABASE_SUPERUSER}:${DATABASE_SUPERUSER_PASSWORD}@${DATABASE_HOST}/template1?ssl=true&sslrootcert=../../data/client-cert.pem"
+export SUPERUSER_DATABASE_URL="postgres://${DATABASE_SUPERUSER}:${DATABASE_SUPERUSER_PASSWORD}@${DATABASE_HOST}/${DATABASE_NAME}?ssl=true&sslrootcert=../../data/client-cert.pem"
 
 echo
 echo
@@ -97,8 +97,8 @@ echo
 echo "Setting the Heroku variables"
 heroku config:set \
   NODE_ENV="production" \
-  DATABASE_URL="${DATABASE_URL}?ssl=true&sslrootcert=../../data/amazon-rds-ca-cert.pem" \
-  AUTH_DATABASE_URL="${AUTH_DATABASE_URL}?ssl=true&sslrootcert=../../data/amazon-rds-ca-cert.pem" \
+  DATABASE_URL="${DATABASE_URL}?ssl=true&sslrootcert=../../data/client-cert.pem" \
+  AUTH_DATABASE_URL="${AUTH_DATABASE_URL}?ssl=true&sslrootcert=../../data/client-cert.pem" \
   DATABASE_AUTHENTICATOR="${DATABASE_AUTHENTICATOR}" \
   DATABASE_VISITOR="${DATABASE_VISITOR}" \
   SECRET="$(openssl rand -base64 48)" \
@@ -106,8 +106,8 @@ heroku config:set \
   ROOT_URL="https://${APP_NAME}.herokuapp.com" \
   -a "$APP_NAME"
 
-echo
-echo
-echo "Pushing to Heroku"
-git push heroku master:master
+# echo
+# echo
+# echo "Pushing to Heroku"
+# git push heroku master:master
 
