@@ -43,8 +43,7 @@ export default async (app: Express) => {
     res.redirect("/");
   });
 
-  if (process.env.GITHUB_KEY) {
-    // public_profile,email
+  if (process.env.FACEBOOK_KEY) {
     await installPassportStrategy(
       app,
       "facebook",
@@ -64,6 +63,9 @@ export default async (app: Express) => {
       }),
       ["token", "tokenSecret"]
     );
+  }
+
+  if (process.env.GOODLE_KEY) {
     await installPassportStrategy(
       app,
       "google",
@@ -83,6 +85,9 @@ export default async (app: Express) => {
       }),
       ["token", "tokenSecret"]
     );
+  }
+
+  if (process.env.GITHUB_KEY) {
     await installPassportStrategy(
       app,
       "github",

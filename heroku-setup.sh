@@ -19,7 +19,7 @@ export DATABASE_HOST="35.188.115.102"
 
 # Superuser credentials, used for creating the database
 export DATABASE_SUPERUSER="postgres"
-export DATABASE_SUPERUSER_PASSWORD="Alanwu131441"
+export DATABASE_SUPERUSER_PASSWORD="fuckthis"
 
 ########################################
 #    PLEASE PROOF-READ THE BELOW,      #
@@ -39,10 +39,10 @@ export DATABASE_OWNER_PASSWORD="$(openssl rand -base64 30 | tr '+/' '-_')"
 export DATABASE_AUTHENTICATOR_PASSWORD="$(openssl rand -base64 30 | tr '+/' '-_')"
 
 # We're using 'template1' because we know it should exist. We should not actually change this database.
-export SUPERUSER_TEMPLATE1_URL="postgres://${DATABASE_SUPERUSER}:${DATABASE_SUPERUSER_PASSWORD}@${DATABASE_HOST}/template1"
-export SUPERUSER_DATABASE_URL="postgres://${DATABASE_SUPERUSER}:${DATABASE_SUPERUSER_PASSWORD}@${DATABASE_HOST}/${DATABASE_NAME}"
+export SUPERUSER_TEMPLATE1_URL="postgres://${DATABASE_SUPERUSER}:${DATABASE_SUPERUSER_PASSWORD}@${DATABASE_HOST}/template1?sslmode=verify-ca&sslrootcert=./data/server-ca.pem&sslcert=./data/client-cert.pem&sslkey=./data/client-key.pem"
+export SUPERUSER_DATABASE_URL="postgres://${DATABASE_SUPERUSER}:${DATABASE_SUPERUSER_PASSWORD}@${DATABASE_HOST}/${DATABASE_NAME}?sslmode=verify-ca&sslrootcert=./data/server-ca.pem&sslcert=./data/client-cert.pem&sslkey=./data/client-key.pem"
 
-# export SUPERUSER_DATABASE_URL="postgres://${DATABASE_SUPERUSER}:${DATABASE_SUPERUSER_PASSWORD}@${DATABASE_HOST}/${DATABASE_NAME}?sslmode=verify-ca&sslrootcert=../../data/server-ca.pem&sslcert=../../data/client-cert.pem&sslkey=../../data/client-key.pem"
+# export SUPERUSER_DATABASE_URL="postgres://postgres:fuckthis@35.188.115.102/template1?sslmode=verify-ca&sslrootcert=./data/server-ca.pem&sslcert=./data/client-cert.pem&sslkey=./data/client-key.pem"
 #  psql "sslmode=verify-ca sslrootcert=server-ca.pem \
 #       sslcert=client-cert.pem sslkey=client-key.pem \
 #       hostaddr=35.188.115.102 \
@@ -103,8 +103,9 @@ echo
 echo "Setting the Heroku variables"
 heroku config:set \
   NODE_ENV="production" \
-  DATABASE_URL="${DATABASE_URL}?ssl=true&sslrootcert=../../data/amazon-rds-ca-cert.pem" \
-  AUTH_DATABASE_URL="${AUTH_DATABASE_URL}?ssl=true&sslrootcert=../../data/amazon-rds-ca-cert.pem" \
+  NODE_TLS_REJECT_UNAUTHORIZED="0"
+  DATABASE_URL="${DATABASE_URL}?sslmode=verify-ca&sslrootcert=../../data/server-ca.pem&sslcert=../../data/client-cert.pem&sslkey=../../data/client-key.pem" \
+  AUTH_DATABASE_URL="${AUTH_DATABASE_URL}?sslmode=verify-ca&sslrootcert=../../data/server-ca.pem&sslcert=../../data/client-cert.pem&sslkey=../../data/client-key.pem" \
   DATABASE_AUTHENTICATOR="${DATABASE_AUTHENTICATOR}" \
   DATABASE_VISITOR="${DATABASE_VISITOR}" \
   SECRET="$(openssl rand -base64 48)" \
