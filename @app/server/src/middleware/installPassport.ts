@@ -65,14 +65,14 @@ export default async (app: Express) => {
     );
   }
 
-  if (process.env.GOODLE_KEY) {
+  if (process.env.GOOGLE_KEY) {
     await installPassportStrategy(
       app,
       "google",
       GoogleStrategy,
       {
-        clientID: process.env.GOODLE_KEY,
-        clientSecret: process.env.GOODLE_SECRET,
+        clientID: process.env.GOOGLE_KEY,
+        clientSecret: process.env.GOOGLE_SECRET,
         scope: ["email", "profile"],
       },
       {},

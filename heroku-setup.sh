@@ -103,7 +103,7 @@ echo
 echo "Setting the Heroku variables"
 heroku config:set \
   NODE_ENV="production" \
-  NODE_TLS_REJECT_UNAUTHORIZED="0"
+  NODE_TLS_REJECT_UNAUTHORIZED="0" \
   DATABASE_URL="${DATABASE_URL}?sslmode=verify-ca&sslrootcert=../../data/server-ca.pem&sslcert=../../data/client-cert.pem&sslkey=../../data/client-key.pem" \
   AUTH_DATABASE_URL="${AUTH_DATABASE_URL}?sslmode=verify-ca&sslrootcert=../../data/server-ca.pem&sslcert=../../data/client-cert.pem&sslkey=../../data/client-key.pem" \
   DATABASE_AUTHENTICATOR="${DATABASE_AUTHENTICATOR}" \
@@ -111,6 +111,14 @@ heroku config:set \
   SECRET="$(openssl rand -base64 48)" \
   JWT_SECRET="$(openssl rand -base64 48)" \
   ROOT_URL="https://${APP_NAME}.herokuapp.com" \
+  GITHUB_KEY="7283e3ddb097653b254e" \
+  GITHUB_SECRET="49ffd796fe7d3502eea19a692319a0ab5cd1291d" \
+  GOODLE_KEY="722252307538-19epjomkr99hgfmvepl5esiqimekbk07.apps.googleusercontent.com" \
+  GOODLE_SECRET="dei4c5x7GuMy_D4enEINtUbs" \
+  FACEBOOK_KEY="790433344820317" \
+  FACEBOOK_SECRET="c938531409e97f8f2ab595375e6b5e33" \
+  AWS_ACCESS_KEY_ID="AKIA3I5KJ7ZB73DCSY2Y" \
+  AWS_SECRET_ACCESS_KEY="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" \
   -a "$APP_NAME"
 
 # echo
