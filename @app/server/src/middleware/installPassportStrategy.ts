@@ -30,7 +30,7 @@ export type GetUserInformationFunction = (
 
 /*
  * Stores where to redirect the user to on authentication success.
- * Tries to avoid redirect loops or malicious redirects.
+ * Tries to avoid redirect loops or malicious redirects. asdf
  */
 const setReturnTo: RequestHandler = (req, _res, next) => {
   const BLOCKED_REDIRECT_PATHS = /^\/+(|auth.*|logout)(\?.*)?$/;

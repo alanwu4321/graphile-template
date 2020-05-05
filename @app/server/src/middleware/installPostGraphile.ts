@@ -109,6 +109,7 @@ export function getPostGraphileOptions({
 
     // Enable GraphiQL in development
     graphiql: isDev || !!process.env.ENABLE_GRAPHIQL,
+    // graphiql: true,
     // Use a fancier GraphiQL with `prettier` for formatting, and header editing.
     enhanceGraphiql: true,
     // Allow EXPLAIN in development (you can replace this with a callback function if you want more control)
